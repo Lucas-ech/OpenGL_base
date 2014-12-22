@@ -40,7 +40,10 @@ namespace Core {
 	    genVBO();
 	    genVAO();
 	    textureHolder.load(Textures::TextureTest, "Images/Caisse.jpg");
-		m_tempTexture = &textureHolder.get(Textures::TextureTest);
+		m_texture = &textureHolder.get(Textures::TextureTest);
+		sf::Image image = m_texture->copyToImage();
+		image.flipVertically();
+		m_texture->update(image);
 	}
 
 	Shape::~Shape() {
@@ -70,7 +73,7 @@ namespace Core {
 			    glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "modelview"), 1, GL_FALSE, glm::value_ptr(view));
 			    glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
-			    sf::Texture::bind(m_tempTexture);
+			    sf::Texture::bind(m_texture);
 
         		glDrawArrays(GL_TRIANGLES, 0, 36);
 

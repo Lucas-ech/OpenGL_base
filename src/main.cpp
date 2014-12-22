@@ -36,7 +36,7 @@ int main()
     Core::Shader shader("Shaders/texture.vert", "Shaders/texture.frag");
     Core::Shape shape(shader, textureHolder);
 
-    glm::mat4 modelview = glm::lookAt(glm::vec3(3, 3, 3), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+    glm::mat4 modelview = glm::lookAt(glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
     //glm::mat4 modelview = glm::lookAt(glm::vec3(0,0,2), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
     glm::mat4 projection = glm::perspective(70.0, 800.0 / 600.0, 1.0, 100.0);
 

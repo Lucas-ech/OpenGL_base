@@ -23,7 +23,7 @@ namespace Core {
 			GLuint m_vboID;
 			std::vector<GLfloat> m_vertices;
 			std::vector<GLfloat> m_coord;
-			sf::Texture *m_tempTexture;
+			sf::Texture *m_texture;
 			unsigned long int m_sizeofVertices;
 			unsigned long int m_sizeofCoord;
 
