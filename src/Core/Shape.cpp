@@ -2,13 +2,7 @@
 
 namespace Core {
 	Shape::Shape(Shader shader, TextureHolder &textureHolder) : m_shader(shader), m_vaoID(0), m_vboID(0), m_sizeofVertices(0), m_sizeofCoord(0) {
-	    glBindTexture(GL_TEXTURE_2D, 0);
-	    glUseProgram(0);
-	    glBindVertexArray(0);
-	    glBindBuffer(GL_ARRAY_BUFFER, 0);
-		m_vertices ={-2, -2, -2,   2, -2, -2,   2, 2, -2,   // Triangle 1
-                    -2, -2, -2,   -2, 2, -2,   2, 2, -2};  // Triangle 2
-		/*{
+		m_vertices = {
 		 	-0.5f, -0.5f, -0.5f,   0.5f, -0.5f, -0.5f,   0.5f, 0.5f, -0.5f,
 		 	-0.5f, -0.5f, -0.5f,   -0.5f, 0.5f, -0.5f,   0.5f, 0.5f, -0.5f,
 
@@ -26,16 +20,26 @@ namespace Core {
 
 		 	-0.5f, 0.5f, -0.5f,   -0.5f, 0.5f, 0.5f,   0.5f, 0.5f, 0.5f,
 		 	-0.5f, 0.5f, -0.5f,   0.5f, 0.5f, -0.5f,   0.5f, 0.5f, 0.5f,
-	    };*/
+	    };
 
 	    m_coord = {
 	    	0, 0,   1, 0,   1, 1,
-           	0, 0,   0, 1,   1, 1
-        };
+           	0, 0,   0, 1,   1, 1,
+           	0, 0,   1, 0,   1, 1,     // Face 2
+			0, 0,   0, 1,   1, 1,     // Face 2
+			0, 0,   1, 0,   1, 1,     // Face 3
+			0, 0,   0, 1,   1, 1,     // Face 3
+			0, 0,   1, 0,   1, 1,     // Face 4
+			0, 0,   0, 1,   1, 1,     // Face 4
+			0, 0,   1, 0,   1, 1,     // Face 5
+			0, 0,   0, 1,   1, 1,     // Face 5
+			0, 0,   1, 0,   1, 1,     // Face 6
+			0, 0,   0, 1,   1, 1
+		};
 
 	    genVBO();
 	    genVAO();
-	    textureHolder.load(Textures::TextureTest, "Images/test.png");
+	    textureHolder.load(Textures::TextureTest, "Images/Caisse.jpg");
 		m_tempTexture = &textureHolder.get(Textures::TextureTest);
 	}
 
@@ -68,7 +72,7 @@ namespace Core {
 
 			    sf::Texture::bind(m_tempTexture);
 
-        		glDrawArrays(GL_TRIANGLES, 0, 6);
+        		glDrawArrays(GL_TRIANGLES, 0, 36);
 
         		sf::Texture::bind(NULL);
 

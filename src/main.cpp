@@ -19,7 +19,8 @@ int main()
     settings.antialiasingLevel = 4;
     settings.majorVersion = 3;
     settings.minorVersion = 3;
-    sf::Window window(sf::VideoMode(800, 600, 32), "OpenGL", (sf::Style::Titlebar | sf::Style::Close), settings);
+    sf::RenderWindow window(sf::VideoMode(800, 600, 32), "OpenGL", (sf::Style::Titlebar | sf::Style::Close), settings);
+    window.setFramerateLimit(10);
     #ifndef NDEBUG
         settings = window.getSettings();
         assert(settings.majorVersion == 3 && settings.minorVersion == 3);
@@ -28,16 +29,16 @@ int main()
     glewExperimental = GL_TRUE;
     glewInit();
     glEnable(GL_TEXTURE_2D);
+    glEnable(GL_DEPTH_TEST);
 
     TextureHolder textureHolder;
 
     Core::Shader shader("Shaders/texture.vert", "Shaders/texture.frag");
     Core::Shape shape(shader, textureHolder);
 
-    //glm::mat4 modelview = glm::lookAt(glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
     glm::mat4 modelview = glm::lookAt(glm::vec3(3, 3, 3), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+    //glm::mat4 modelview = glm::lookAt(glm::vec3(0,0,2), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
     glm::mat4 projection = glm::perspective(70.0, 800.0 / 600.0, 1.0, 100.0);
-
 
     while (window.isOpen())
     {
