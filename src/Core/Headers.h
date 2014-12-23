@@ -1,6 +1,9 @@
 #ifndef HEADERS_H
 #define HEADERS_H
 
+// Link statically with GLEW
+#define GLEW_STATIC
+
 // Remove compilation internal GLM errors
 #define GLM_FORCE_RADIANS
 
