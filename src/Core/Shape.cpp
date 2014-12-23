@@ -1,7 +1,7 @@
 #include "Shape.h"
 
 namespace Core {
-	Shape::Shape(Shader shader) : m_texture(nullptr), m_vertexSent(false), m_shader(shader), m_vaoID(0), m_vboID(0), m_sizeofVertices(0), m_sizeofCoords(0) {
+	Shape::Shape(Shader shader) : m_texture(nullptr), m_model(1.0), m_vertexSent(false), m_shader(shader), m_vaoID(0), m_vboID(0), m_sizeofVertices(0), m_sizeofCoords(0) {
 	}
 
 	Shape::~Shape() {
@@ -28,7 +28,7 @@ namespace Core {
         	glBindVertexArray(m_vaoID);
 
         		// On envoie les matrices au shader
-			    m_shader.sendMat4("modelviewProjection", projection * view);
+        		m_shader.sendMat4("modelviewProjection", projection * view * m_model);
 
 			    #ifndef NDEBUG
 			    	assert(m_texture != nullptr);
@@ -50,6 +50,31 @@ namespace Core {
 
 		// Désactivation du shader
    		glUseProgram(0);
+	}
+
+	void Shape::translate(float x, float y, float z) {
+		m_model = glm::translate(m_model, glm::vec3(x, y, z));
+	}
+
+	void Shape::translate(glm::vec3 const &v) {
+		m_model = glm::translate(m_model, v);
+	}
+
+	void Shape::rotate(float rad, float x, float y, float z) {
+		m_model = glm::rotate(m_model, rad, glm::vec3(x, y, z));
+	}
+
+	void Shape::rotate(float rad, glm::vec3 const &v) {
+		m_model = glm::rotate(m_model, rad, v);
+	}
+
+	void Shape::setPosition(float x, float y, float z) {
+		setPosition(glm::vec3(x, y, z));
+	}
+
+	void Shape::setPosition(glm::vec3 const &v) {
+		m_model = glm::mat4(1.0);
+		translate(v);
 	}
 
 	void Shape::sendVertex() {

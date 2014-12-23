@@ -15,12 +15,19 @@ namespace Core {
 			Shape(Shader shader);
 			~Shape();
 			void draw(glm::mat4 &projection, glm::mat4 &view);
+			void translate(float x, float y, float z);
+			void translate(glm::vec3 const &v);
+			void rotate(float rad, float x, float y, float z);
+			void rotate(float rad, glm::vec3 const &v);
+			void setPosition(float x, float y, float z);
+			void setPosition(glm::vec3 const &v);
 
 		protected:
 			void sendVertex();
 			std::vector<GLfloat> m_vertices;
 			std::vector<GLfloat> m_coords;
 			sf::Texture *m_texture;
+			glm::mat4 m_model;
 
 		private:
 			void genVBO();
