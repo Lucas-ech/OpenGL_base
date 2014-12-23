@@ -8,7 +8,8 @@
 #include "ResourceIdentifiers.h"
 #include "Core/Camera.h"
 
-class App {
+class App
+{
 
 	public:
 		App();

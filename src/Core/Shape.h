@@ -8,9 +8,10 @@
 #include "ResourceHolder.h"
 #include "../ResourceIdentifiers.h"
 
-namespace Core {
-	class Shape {
-
+namespace Core
+{
+	class Shape
+	{
 		public:
 			Shape(Shader shader);
 			~Shape();
@@ -38,7 +39,6 @@ namespace Core {
 			GLuint m_vboID;
 			unsigned long int m_sizeofVertices;
 			unsigned long int m_sizeofCoords;
-
 	};
 }
 

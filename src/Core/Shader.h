@@ -7,16 +7,15 @@
 
 #include "Headers.h"
 
-namespace Core {
+namespace Core
+{
 	class Shader
 	{
 	    public:
 		    Shader(Shader const &shaderACopier);
 		    Shader(std::string vertexSource, std::string fragmentSource);
 		    ~Shader();
-
 		    Shader& operator=(Shader const &shaderACopier);
-
 		    GLuint getProgramID() const;
 		    void sendMat4(std::string name, glm::mat4 matrix);
 
@@ -26,7 +25,6 @@ namespace Core {
 		    GLuint m_vertexID;
 		    GLuint m_fragmentID;
 		    GLuint m_programID;
-
 		    std::string m_vertexSource;
 		    std::string m_fragmentSource;
 	};

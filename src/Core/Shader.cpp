@@ -1,6 +1,7 @@
 #include "Shader.h"
 
-namespace Core {
+namespace Core
+{
     Shader::Shader(Shader const &shaderACopier): m_vertexSource(shaderACopier.m_vertexSource), m_fragmentSource(shaderACopier.m_fragmentSource)
     {
         // Chargement du nouveau shader
@@ -8,8 +9,8 @@ namespace Core {
     }
 
 
-    Shader::Shader(std::string vertexSource, std::string fragmentSource) : m_vertexID(0), m_fragmentID(0), m_programID(0),
-                                                                           m_vertexSource(vertexSource), m_fragmentSource(fragmentSource)
+    Shader::Shader(std::string vertexSource, std::string fragmentSource)
+    : m_vertexID(0), m_fragmentID(0), m_programID(0), m_vertexSource(vertexSource), m_fragmentSource(fragmentSource)
     {
         load();
     }
@@ -81,8 +82,7 @@ namespace Core {
         glGetProgramiv(m_programID, GL_LINK_STATUS, &erreurLink);
 
         // S'il y a eu une erreur
-        if(erreurLink != GL_TRUE)
-        {
+        if(erreurLink != GL_TRUE) {
             // Récupération de la taille de l'erreur
             GLint tailleErreur(0);
             glGetProgramiv(m_programID, GL_INFO_LOG_LENGTH, &tailleErreur);
@@ -113,8 +113,7 @@ namespace Core {
         shader = glCreateShader(type);
 
         // Vérification du shader
-        if(shader == 0)
-        {
+        if(shader == 0) {
             std::cout << "Erreur, le type de shader (" << type << ") n'existe pas" << std::endl;
             return false;
         }
@@ -123,8 +122,7 @@ namespace Core {
         std::ifstream fichier(fichierSource.c_str());
 
         // Test d'ouverture
-        if(!fichier)
-        {
+        if(!fichier) {
             std::cout << "Erreur le fichier " << fichierSource << " est introuvable" << std::endl;
             glDeleteShader(shader);
 
@@ -157,8 +155,7 @@ namespace Core {
         glGetShaderiv(shader, GL_COMPILE_STATUS, &erreurCompilation);
 
         // S'il y a eu une erreur
-        if(erreurCompilation != GL_TRUE)
-        {
+        if(erreurCompilation != GL_TRUE) {
             // Récupération de la taille de l'erreur
             GLint tailleErreur(0);
             glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &tailleErreur);
@@ -183,13 +180,14 @@ namespace Core {
     }
 
 
-    // Getter
     GLuint Shader::getProgramID() const
     {
         return m_programID;
     }
 
-    void Shader::sendMat4(std::string name, glm::mat4 matrix) {
+
+    void Shader::sendMat4(std::string name, glm::mat4 matrix)
+    {
         glUniformMatrix4fv(glGetUniformLocation(getProgramID(), name.c_str()), 1, GL_FALSE, glm::value_ptr(matrix));
     }
 

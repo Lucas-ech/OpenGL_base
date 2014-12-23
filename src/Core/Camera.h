@@ -1,17 +1,19 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
+#include <cmath>
 #include "Headers.h"
-#include "Mouse.cpp" ////////!!!
+#include "Mouse.h"
 
-namespace Core {
-	class Camera {
-
+namespace Core
+{
+	class Camera
+	{
 		public:
 			Camera();
 			Camera(glm::vec3 position, glm::vec3 target, glm::vec3 verticalAxis);
 			~Camera();
-			void orient(sf::Vector2i localPosition);
+			void orient(sf::Vector2i position);
 			void move();
 			void lookAt(glm::mat4 &view);
 
@@ -24,7 +26,6 @@ namespace Core {
 			glm::vec3 m_position;
 			glm::vec3 m_target;
 			Core::Mouse m_mouse;
-
 	};
 }
 

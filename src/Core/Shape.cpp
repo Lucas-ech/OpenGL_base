@@ -1,10 +1,16 @@
 #include "Shape.h"
 
-namespace Core {
-	Shape::Shape(Shader shader) : m_texture(nullptr), m_model(1.0), m_vertexSent(false), m_shader(shader), m_vaoID(0), m_vboID(0), m_sizeofVertices(0), m_sizeofCoords(0) {
+namespace Core
+{
+	Shape::Shape(Shader shader)
+	: m_texture(nullptr), m_model(1.0), m_vertexSent(false), m_shader(shader),
+	m_vaoID(0), m_vboID(0), m_sizeofVertices(0), m_sizeofCoords(0)
+	{
 	}
 
-	Shape::~Shape() {
+
+	Shape::~Shape()
+	{
 		// Destruction d'un éventuel ancien VBO
 		if(glIsBuffer(m_vboID) == GL_TRUE) {
 	        glDeleteBuffers(1, &m_vboID);
@@ -16,8 +22,9 @@ namespace Core {
 	    }
 	}
 
-	void Shape::draw(glm::mat4 &projection, glm::mat4 &view) {
 
+	void Shape::draw(glm::mat4 &projection, glm::mat4 &view)
+	{
 		assert(m_vboID != 0);
 		assert(m_vaoID != 0);
 
@@ -52,32 +59,46 @@ namespace Core {
    		glUseProgram(0);
 	}
 
-	void Shape::translate(float x, float y, float z) {
+
+	void Shape::translate(float x, float y, float z)
+	{
 		m_model = glm::translate(m_model, glm::vec3(x, y, z));
 	}
 
-	void Shape::translate(glm::vec3 const &v) {
+
+	void Shape::translate(glm::vec3 const &v)
+	{
 		m_model = glm::translate(m_model, v);
 	}
 
-	void Shape::rotate(float rad, float x, float y, float z) {
+
+	void Shape::rotate(float rad, float x, float y, float z)
+	{
 		m_model = glm::rotate(m_model, rad, glm::vec3(x, y, z));
 	}
 
-	void Shape::rotate(float rad, glm::vec3 const &v) {
+
+	void Shape::rotate(float rad, glm::vec3 const &v)
+	{
 		m_model = glm::rotate(m_model, rad, v);
 	}
 
-	void Shape::setPosition(float x, float y, float z) {
+
+	void Shape::setPosition(float x, float y, float z)
+	{
 		setPosition(glm::vec3(x, y, z));
 	}
 
-	void Shape::setPosition(glm::vec3 const &v) {
+
+	void Shape::setPosition(glm::vec3 const &v)
+	{
 		m_model = glm::mat4(1.0);
 		translate(v);
 	}
 
-	void Shape::sendVertex() {
+
+	void Shape::sendVertex()
+	{
 		if(m_vertexSent) {
 			throw std::runtime_error("Vertex already sent");
 		}
@@ -86,13 +107,15 @@ namespace Core {
 		m_vertexSent = true;
 	}
 
+
 	/*
 	TODO: Prendre en charge la frequence de changement:
 	 - GL_STATIC_DRAW : pour les données très peu mises à jour
 	 - GL_DYNAMIC_DRAW : pour les données mises à jour fréquemment (plusieurs fois par seconde mais pas à chaque frame)
 	 - GL_STREAM_DRAW : pour les données mises à jour tout le temps
 	*/
-	void Shape::genVBO() {
+	void Shape::genVBO()
+	{
 		// Destruction d'un éventuel ancien VBO
 	    if(glIsBuffer(m_vboID) == GL_TRUE) {
 	        glDeleteBuffers(1, &m_vboID);
@@ -127,7 +150,9 @@ namespace Core {
 	    glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
-	void Shape::genVAO() {
+
+	void Shape::genVAO()
+	{
 		// Destruction d'un éventuel ancien VAO
 	    if(glIsVertexArray(m_vaoID) == GL_TRUE) {
 	        glDeleteVertexArrays(1, &m_vaoID);
@@ -155,6 +180,5 @@ namespace Core {
 	    // Déverrouillage du VAO
     	glBindVertexArray(0);
 	}
-
 
 }

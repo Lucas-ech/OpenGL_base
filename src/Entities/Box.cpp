@@ -1,6 +1,7 @@
 #include "Box.h"
 
-Box::Box(Core::Shader shader, TextureHolder &textureHolder) : Shape(shader) {
+Box::Box(Core::Shader shader, TextureHolder &textureHolder) : Shape(shader)
+{
 	m_vertices = {
 	 	-0.5f, -0.5f, -0.5f,   0.5f, -0.5f, -0.5f,   0.5f, 0.5f, -0.5f,
 	 	-0.5f, -0.5f, -0.5f,   -0.5f, 0.5f, -0.5f,   0.5f, 0.5f, -0.5f,
@@ -35,6 +36,7 @@ Box::Box(Core::Shader shader, TextureHolder &textureHolder) : Shape(shader) {
 		0, 0,   1, 0,   1, 1,     // Face 6
 		0, 0,   0, 1,   1, 1
 	};
+
 	sendVertex();
 	textureHolder.load(Textures::TextureTest, "Images/Caisse.jpg");
 	m_texture = &textureHolder.get(Textures::TextureTest);
@@ -43,6 +45,7 @@ Box::Box(Core::Shader shader, TextureHolder &textureHolder) : Shape(shader) {
 	m_texture->update(image);
 }
 
-Box::~Box() {
 
+Box::~Box()
+{
 }

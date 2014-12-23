@@ -1,6 +1,7 @@
 #include "App.h"
 
-App::App() {
+App::App()
+{
     sf::ContextSettings settings;
     settings.depthBits = 24;
     settings.stencilBits = 8;
@@ -27,8 +28,9 @@ App::App() {
     glEnable(GL_DEPTH_TEST);
 }
 
-void App::run() {
 
+void App::run()
+{
 	Core::Camera camera(glm::vec3(3, 3, 3), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 
     Core::Shader shader("Shaders/texture.vert", "Shaders/texture.frag");
@@ -37,13 +39,10 @@ void App::run() {
     glm::mat4 view;
     glm::mat4 projection = glm::perspective(70.0, 800.0 / 600.0, 1.0, 100.0);
 
-    while (m_window->isOpen())
-    {
+    while (m_window->isOpen()) {
         sf::Event windowEvent;
-        while (m_window->pollEvent(windowEvent))
-        {
-            switch (windowEvent.type)
-            {
+        while (m_window->pollEvent(windowEvent)) {
+            switch (windowEvent.type) {
                 case sf::Event::Closed:
                     m_window->close();
                     break;
@@ -57,8 +56,7 @@ void App::run() {
         }
 
         GLenum glErr = glGetError();
-        if (glErr != GL_NO_ERROR)
-        {
+        if (glErr != GL_NO_ERROR) {
            std::cout << "\033[01;31mErreur " << glErr << ": \"" << gluErrorString(glErr) << "\"" << "\033[00m" << std::endl;
         }
 
@@ -76,5 +74,7 @@ void App::run() {
     }
 }
 
-App::~App() {
+
+App::~App()
+{
 }

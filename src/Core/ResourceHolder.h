@@ -6,7 +6,9 @@
 #include <memory>
 #include <stdexcept>
 #include <cassert>
-namespace Core {
+
+namespace Core
+{
 	template <typename Resource, typename Identifier>
 	class ResourceHolder
 	{
@@ -22,13 +24,10 @@ namespace Core {
 
 		private:
 			void insertResource(Identifier id, std::unique_ptr<Resource> resource);
-
-
-		private:
 			std::map<Identifier, std::unique_ptr<Resource> > mResourceMap;
 	};
 }
 
 #include "ResourceHolder.inl"
 
-#endif // RESOURCEHOLDER_H
+#endif //RESOURCEHOLDER_H
