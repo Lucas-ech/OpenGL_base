@@ -6,6 +6,7 @@
 #include "Entities/Box.h"
 #include "Core/ResourceHolder.h"
 #include "ResourceIdentifiers.h"
+#include "Core/Camera.h"
 
 class App {
 

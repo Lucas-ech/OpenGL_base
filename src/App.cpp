@@ -13,6 +13,7 @@ App::App() {
     );
 
     m_window->setFramerateLimit(10);
+    m_window->setMouseCursorVisible(false);
 
     #ifndef NDEBUG
         settings = m_window->getSettings();
@@ -28,10 +29,12 @@ App::App() {
 
 void App::run() {
 
+	Core::Camera camera(glm::vec3(3, 3, 3), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+
     Core::Shader shader("Shaders/texture.vert", "Shaders/texture.frag");
     Box box(shader, m_textureHolder);
 
-    glm::mat4 view = glm::lookAt(glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+    glm::mat4 view;
     glm::mat4 projection = glm::perspective(70.0, 800.0 / 600.0, 1.0, 100.0);
 
     while (m_window->isOpen())
@@ -44,6 +47,10 @@ void App::run() {
                 case sf::Event::Closed:
                     m_window->close();
                     break;
+                case sf::Event::KeyPressed:
+                	if(windowEvent.key.code == sf::Keyboard::Escape) {
+                		m_window->close();
+                	}
                 default:
                     break;
             }
@@ -54,6 +61,9 @@ void App::run() {
         {
            std::cout << "\033[01;31mErreur " << glErr << ": \"" << gluErrorString(glErr) << "\"" << "\033[00m" << std::endl;
         }
+
+        camera.move();
+    	camera.lookAt(view);
 
         // Clear the screen to black
         glClearColor(0.0f, 0.6f, 1.0f, 1.0f);
