@@ -16,6 +16,6 @@ namespace Textures
 template <typename Resource, typename Identifier>
 class ResourceHolder;
 
-typedef ResourceHolder<sf::Texture, Textures::ID> TextureHolder;
+typedef Core::ResourceHolder<sf::Texture, Textures::ID> TextureHolder;
 
 #endif //RESOURCEIDENTIFIERS_H

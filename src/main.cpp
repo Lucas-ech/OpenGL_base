@@ -7,7 +7,7 @@
 #include <cmath>
 
 #include "Core/Shader.h"
-#include "Core/Shape.h"
+#include "Entities/Box.h"
 #include "Core/ResourceHolder.h"
 #include "ResourceIdentifiers.h"
 
@@ -34,7 +34,7 @@ int main()
     TextureHolder textureHolder;
 
     Core::Shader shader("Shaders/texture.vert", "Shaders/texture.frag");
-    Core::Shape shape(shader, textureHolder);
+    Box box(shader, textureHolder);
 
     glm::mat4 modelview = glm::lookAt(glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
     //glm::mat4 modelview = glm::lookAt(glm::vec3(0,0,2), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
@@ -63,12 +63,12 @@ int main()
         }
 
         // Clear the screen to black
-        glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
+        glClearColor(0.0f, 0.6f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
         //modelview = rotate(modelview, 60.0f, glm::vec3(0.0,0.0,1.0));
-        shape.draw(projection, modelview);
+        box.draw(projection, modelview);
 
         // Swap buffers
         window.display();

@@ -1,49 +1,7 @@
 #include "Shape.h"
 
 namespace Core {
-	Shape::Shape(Shader shader, TextureHolder &textureHolder) : m_shader(shader), m_vaoID(0), m_vboID(0), m_sizeofVertices(0), m_sizeofCoord(0) {
-		m_vertices = {
-		 	-0.5f, -0.5f, -0.5f,   0.5f, -0.5f, -0.5f,   0.5f, 0.5f, -0.5f,
-		 	-0.5f, -0.5f, -0.5f,   -0.5f, 0.5f, -0.5f,   0.5f, 0.5f, -0.5f,
-
-		 	-0.5f, -0.5f, -0.5f,   -0.5f, -0.5f, 0.5f,   -0.5f, 0.5f, 0.5f,
-		 	-0.5f, -0.5f, -0.5f,   -0.5f, 0.5f, -0.5f,   -0.5f, 0.5f, 0.5f,
-
-		 	-0.5f, -0.5f, 0.5f,   0.5f, -0.5f, 0.5f,   0.5f, 0.5f, 0.5f,
-		 	-0.5f, -0.5f, 0.5f,   -0.5f, 0.5f, 0.5f,   0.5f, 0.5f, 0.5f,
-
-		 	0.5f, -0.5f, -0.5f,   0.5f, -0.5f, 0.5f,   0.5f, 0.5f, 0.5f,
-		 	0.5f, -0.5f, -0.5f,   0.5f, 0.5f, -0.5f,   0.5f, 0.5f, 0.5f,
-
-		 	-0.5f, -0.5f, -0.5f,   -0.5f, -0.5f, 0.5f,   0.5f, -0.5f, 0.5f,
-		 	-0.5f, -0.5f, -0.5f,   0.5f, -0.5f, -0.5f,   0.5f, -0.5f, 0.5f,
-
-		 	-0.5f, 0.5f, -0.5f,   -0.5f, 0.5f, 0.5f,   0.5f, 0.5f, 0.5f,
-		 	-0.5f, 0.5f, -0.5f,   0.5f, 0.5f, -0.5f,   0.5f, 0.5f, 0.5f,
-	    };
-
-	    m_coord = {
-	    	0, 0,   1, 0,   1, 1,
-           	0, 0,   0, 1,   1, 1,
-           	0, 0,   1, 0,   1, 1,     // Face 2
-			0, 0,   0, 1,   1, 1,     // Face 2
-			0, 0,   1, 0,   1, 1,     // Face 3
-			0, 0,   0, 1,   1, 1,     // Face 3
-			0, 0,   1, 0,   1, 1,     // Face 4
-			0, 0,   0, 1,   1, 1,     // Face 4
-			0, 0,   1, 0,   1, 1,     // Face 5
-			0, 0,   0, 1,   1, 1,     // Face 5
-			0, 0,   1, 0,   1, 1,     // Face 6
-			0, 0,   0, 1,   1, 1
-		};
-
-	    genVBO();
-	    genVAO();
-	    textureHolder.load(Textures::TextureTest, "Images/Caisse.jpg");
-		m_texture = &textureHolder.get(Textures::TextureTest);
-		sf::Image image = m_texture->copyToImage();
-		image.flipVertically();
-		m_texture->update(image);
+	Shape::Shape(Shader shader) : m_texture(nullptr), m_vertexSent(false), m_shader(shader), m_vaoID(0), m_vboID(0), m_sizeofVertices(0), m_sizeofCoords(0) {
 	}
 
 	Shape::~Shape() {
@@ -73,9 +31,18 @@ namespace Core {
 			    glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "modelview"), 1, GL_FALSE, glm::value_ptr(view));
 			    glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
+			    #ifndef NDEBUG
+			    	assert(m_texture != nullptr);
+			    #endif
+
 			    sf::Texture::bind(m_texture);
 
-        		glDrawArrays(GL_TRIANGLES, 0, 36);
+			    #ifndef NDEBUG
+			    	// On vérifie que le nombre de points est multiple de 3 (= triangles entiers)
+			    	assert(m_vertices.size() % 3 == 0);
+			    #endif
+
+        		glDrawArrays(GL_TRIANGLES, 0, static_cast<int>(m_vertices.size() / 3));
 
         		sf::Texture::bind(NULL);
 
@@ -84,6 +51,15 @@ namespace Core {
 
 		// Désactivation du shader
    		glUseProgram(0);
+	}
+
+	void Shape::sendVertex() {
+		if(m_vertexSent) {
+			throw std::runtime_error("Vertex already sent");
+		}
+		genVBO();
+		genVAO();
+		m_vertexSent = true;
 	}
 
 	/*
@@ -99,7 +75,16 @@ namespace Core {
 	    }
 
     	m_sizeofVertices = m_vertices.size() * sizeof(float);
-    	m_sizeofCoord = m_coord.size() * sizeof(float);
+    	m_sizeofCoords = m_coords.size() * sizeof(float);
+
+    	if(m_sizeofVertices == 0) {
+			throw std::runtime_error("No vertices sent");
+    	}
+
+    	if(m_sizeofCoords == 0) {
+			throw std::runtime_error("No coords sent");
+    	}
+
 
     	// Creation du Vertex Buffer Object
     	glGenBuffers(1, &m_vboID);
@@ -108,11 +93,11 @@ namespace Core {
     	glBindBuffer(GL_ARRAY_BUFFER, m_vboID);
 
 	    	// Allocation de la mémoire de la carte graphique
-	        glBufferData(GL_ARRAY_BUFFER, m_sizeofVertices + m_sizeofCoord, 0, GL_STATIC_DRAW);
+	        glBufferData(GL_ARRAY_BUFFER, m_sizeofVertices + m_sizeofCoords, 0, GL_STATIC_DRAW);
 
 		        //Transfert
 		        glBufferSubData(GL_ARRAY_BUFFER, 0, m_sizeofVertices, &m_vertices[0]);
-		        glBufferSubData(GL_ARRAY_BUFFER, m_sizeofVertices, m_sizeofCoord, &m_coord[0]);
+		        glBufferSubData(GL_ARRAY_BUFFER, m_sizeofVertices, m_sizeofCoords, &m_coords[0]);
 
 		// Déverrouillage du VBO
 	    glBindBuffer(GL_ARRAY_BUFFER, 0);
