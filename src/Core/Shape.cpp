@@ -28,8 +28,7 @@ namespace Core {
         	glBindVertexArray(m_vaoID);
 
         		// On envoie les matrices au shader
-			    glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "modelview"), 1, GL_FALSE, glm::value_ptr(view));
-			    glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+			    m_shader.sendMat4("modelviewProjection", projection * view);
 
 			    #ifndef NDEBUG
 			    	assert(m_texture != nullptr);
