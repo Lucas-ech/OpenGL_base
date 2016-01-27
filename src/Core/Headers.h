@@ -21,12 +21,12 @@
 #else
 	// Include UNIX/Linux
 	#define GL3_PROTOTYPES 1
-	#include "GL/glew.h"
+	#include <GL/glew.h>
 #endif
 
-#include "glm/glm.hpp"
-#include "glm/gtx/transform.hpp"
-#include "glm/gtc/type_ptr.hpp"
+#include <glm/glm.hpp>
+#include <glm/gtx/transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
